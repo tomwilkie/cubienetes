@@ -1,4 +1,6 @@
-# Cubienetes: A Kubernetes Cluster on 5 x Cubieboard2
+# Cubienetes: A Kubernetes Cluster on Cubieboard2s
+
+This is a project to build a home 5-node Kubernetes cluster using Cubieboards.
 
 ## Parts
 
@@ -11,12 +13,41 @@
 - 2 x [M3 Full Nut (50 Pack)](https://www.amazon.co.uk/gp/product/B00A6G3G2C) £1.40
 - 2 x [M3 Washer 3.2mm (50 Pack)](https://www.amazon.co.uk/gp/product/B00A6PGHC4) £1.65
 - 10 x [Custom 3D-printed HD brackets](https://www.shapeways.com/product/WRM3XQTWM/hdbracket) £3.50
+- 5 x [Transcend 128GB SATA III SSD360 128GB](https://www.amazon.co.uk/dp/B018HW0EA8) £56.50
 
-## Software
+## Software
 
 ### Operating System
 
 - Used Debian Jessie from https://www.armbian.com/cubieboard-2/
 - Use [Keka](http://www.kekaosx.com/en/) and [Etcher](https://etcher.io/) to decompress / write the image.
+- Use the latest kernel you can - Docker needs it.
 
+### Docker Daemon
 
+- Used [Hypriot's instructions](http://blog.hypriot.com/post/family_arm_hardware_for_docker_more_children/)
+- https://packagecloud.io/app/Hypriot/Schatzkiste/search?filter=all&q=docker-hypriot&dist=debian%2Fjessie
+
+```
+$ curl https://packagecloud.io/gpg.key | sudo apt-key add -
+$ sudo bash -c 'cat > /etc/apt/sources.list.d/Hypriot_Schatzkiste.list' << EOF
+deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ jessie main
+EOF
+```
+
+## Assembly
+
+First versions of the hard disk brackets didn't quite fit:
+
+![First partial assembly](images/v1-partial.jpg)
+
+Problems were:
+- The SSD mounting hole pitch was off by 0.5mm.
+- The walls around the pillars meant the distance between the pillars was too small.
+- The bore of all the holes (3mm) was too tight for M3 threaded rod and needed drilling out.  Surprisingly the Shapeways white plastic took this quite well.
+
+So I created & new design and ordered that.
+
+I did a full build to get a handle on the cabling too:
+
+![First full assembly](images/v1-full.jpg)
