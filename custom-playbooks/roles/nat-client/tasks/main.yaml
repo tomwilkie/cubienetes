@@ -1,0 +1,20 @@
+---
+- name: figure out master IP address
+  set_fact: master_ip={{ hostvars[groups['master'][0]]['ansible_eth0']['ipv4']['address'] }}
+
+# We're going to temporarily get it working so we can install a package, then set it up properly
+- name: add a default route
+  command: ip route add default via {{ master_ip }}
+  ignore_errors: yes
+- name: add a DNS server
+  command: echo "nameserver 8.8.8.8" >/etc/resolv.conf
+
+- name: install python-dbus, python-gobject, python-networkmanager
+  apt: name={{item}} state=present update_cache=no
+  with_items:
+    - python-dbus
+    - python-gobject
+    - libnm-util-dev
+
+- name: setup network properly
+  nmcli: conn_name=eth0 gw4={{ master_ip }} dns4={{ master_ip }} state=present

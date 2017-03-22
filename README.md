@@ -15,26 +15,6 @@ This is a project to build a home 5-node Kubernetes cluster using Cubieboards.
 - 10 x [Custom 3D-printed HD brackets](https://www.shapeways.com/product/WRM3XQTWM/hdbracket) £3.50
 - 5 x [Transcend 128GB SATA III SSD360 128GB](https://www.amazon.co.uk/dp/B018HW0EA8) £56.50
 
-## Software
-
-### Operating System
-
-- Used Debian Jessie from https://www.armbian.com/cubieboard-2/
-- Use [Keka](http://www.kekaosx.com/en/) and [Etcher](https://etcher.io/) to decompress / write the image.
-- Use the latest kernel you can - Docker needs it.
-
-### Docker Daemon
-
-- Used [Hypriot's instructions](http://blog.hypriot.com/post/family_arm_hardware_for_docker_more_children/)
-- https://packagecloud.io/app/Hypriot/Schatzkiste/search?filter=all&q=docker-hypriot&dist=debian%2Fjessie
-
-```
-$ curl https://packagecloud.io/gpg.key | sudo apt-key add -
-$ sudo bash -c 'cat > /etc/apt/sources.list.d/Hypriot_Schatzkiste.list' << EOF
-deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ jessie main
-EOF
-```
-
 ## Assembly
 
 First versions of the hard disk brackets didn't quite fit:
@@ -51,3 +31,54 @@ So I created & new design and ordered that.
 I did a full build to get a handle on the cabling too:
 
 ![First full assembly](images/v1-full.jpg)
+
+## Software
+
+### Operating System
+
+- Used Debian Jessie from https://www.armbian.com/cubieboard-2/
+- Use [Keka](http://www.kekaosx.com/en/) and [Etcher](https://etcher.io/) to decompress / write the image.
+- Use the latest kernel you can - Docker needs it.
+
+### SSH
+
+For ansible to work, you need to setup password-less ssh:
+
+```
+mkdir .ssh
+chmod 700 ~/.ssh
+echo "<REDACTED>" > ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+```
+
+I did this manually.  I also statically assigned IP addresses 192.168.0.1-5 to the Cubieboards manually.  The rest was configured with ansible.
+
+### Networking.
+
+I designated the first Cubieboard as the "master", and set it up to do NAT routing & DNS.
+
+```
+ansible-playbook --inventory-file=inventory --user=root custom-playbooks/networking.yaml
+```
+
+### Disks
+
+The disks got LVM & ext4 installed and mounted at /mnt/countainers:
+
+```
+ansible-playbook --inventory-file=inventory --user=root custom-playbooks/disks.yaml
+```
+
+### Docker Daemon
+
+- Used [Hypriot's instructions](http://blog.hypriot.com/post/family_arm_hardware_for_docker_more_children/)
+- https://packagecloud.io/app/Hypriot/Schatzkiste/search?filter=all&q=docker-hypriot&dist=debian%2Fjessie
+
+```
+$ curl https://packagecloud.io/gpg.key | sudo apt-key add -
+$ sudo bash -c 'cat > /etc/apt/sources.list.d/Hypriot_Schatzkiste.list' << EOF
+deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ jessie main
+EOF
+```
+
+

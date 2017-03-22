@@ -1,0 +1,21 @@
+---
+- name: install DNSmasq
+  apt: name=dnsmasq state=present update_cache=no
+
+- name: dnsmasq.conf
+  copy: src=dnsmasq.conf dest=/etc/
+
+- name: Enable IP Forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    state: present
+
+- iptables: flush=true
+- iptables: table=nat flush=true
+
+- name: iptables --table nat --append POSTROUTING --out-interface eth0 -j MASQUERADE
+  iptables: table=nat action=append chain=POSTROUTING out_interface=wlan0 jump=MASQUERADE
+
+- name: iptables --append FORWARD --in-interface eth1 -j ACCEPT
+  iptables: action=append chain=FORWARD in_interface=eth0 jump=ACCEPT

@@ -1,0 +1,10 @@
+---
+- hosts: master
+  become: yes
+  roles:
+    - nat-router
+
+- hosts: minion
+  become: yes
+  roles:
+    - nat-client

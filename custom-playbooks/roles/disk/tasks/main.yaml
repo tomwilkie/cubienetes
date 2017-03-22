@@ -1,0 +1,36 @@
+---
+- name: remove existing mount for /dev/sda
+  mount:
+    name: /mnt
+    src: /dev/sda
+    state: absent
+    fstype: ext4
+
+- name: figure out which disks we have attached
+  set_fact: ephemeral_devices=/dev/sda
+
+- name: ensure lvm tools are installed
+  apt: name=lvm2 state=present update_cache=no
+
+- name: make an lvm volume group
+  lvg: vg=vgpool pvs={{ ephemeral_devices }} pesize=32
+
+- name: make an lvm logical volume
+  lvol: vg=vgpool lv=containers size=100%VG
+
+- name: ensure logical volume is formatted
+  filesystem: fstype=ext4 dev=/dev/vgpool/containers resizefs=yes
+
+- name: mount containers volume
+  mount:
+    name: /mnt/containers
+    src: /dev/vgpool/containers
+    state: mounted
+    fstype: ext4
+    opts: noatime,nofail
+
+- name: make dir for k8s volumes on said volume
+  file: path=/mnt/containers/kubernetes state=directory
+
+- name: make dir for docker on said volume
+  file: path=/mnt/containers/docker state=directory
