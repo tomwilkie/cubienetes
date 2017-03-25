@@ -1,8 +1,8 @@
 [master]
-192.168.0.1 static_pod_cidr=10.0.1.0/24 private_hostname=node1
+192.168.0.1 static_pod_cidr=10.0.1.0/24 private_hostname=cubienetes1
 
 [minion]
-192.168.0.2 static_pod_cidr=10.0.2.0/24 private_hostname=node2
-192.168.0.3 static_pod_cidr=10.0.3.0/24 private_hostname=node3
-192.168.0.4 static_pod_cidr=10.0.4.0/24 private_hostname=node4
-192.168.0.5 static_pod_cidr=10.0.5.0/24 private_hostname=node5
+192.168.0.2 static_pod_cidr=10.0.2.0/24 private_hostname=cubienetes2
+192.168.0.3 static_pod_cidr=10.0.3.0/24 private_hostname=cubienetes3
+192.168.0.4 static_pod_cidr=10.0.4.0/24 private_hostname=cubienetes4
+192.168.0.5 static_pod_cidr=10.0.5.0/24 private_hostname=cubienetes5

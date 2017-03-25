@@ -1,0 +1,5 @@
+- name: set hostname
+  hostname: name={{ private_hostname }}
+
+- name: fill in /etc/hosts
+  template: src=hosts dest=/etc/hosts

@@ -10,7 +10,7 @@
   lineinfile:
     destfile: /etc/resolv.conf
     regexp: '^nameserver'
-    line: 'nameserver 8.8.8.8'
+    line: 'nameserver 192.168.0.1'
 
 - name: add a default root
   lineinfile:

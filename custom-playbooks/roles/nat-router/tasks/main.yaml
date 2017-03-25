@@ -11,11 +11,10 @@
     value: 1
     state: present
 
-- iptables: flush=true
-- iptables: table=nat flush=true
+- name: install iptables-persistent
+  apt: name=iptables-persistent state=present update_cache=no
 
-- name: iptables --table nat --append POSTROUTING --out-interface eth0 -j MASQUERADE
-  iptables: table=nat action=append chain=POSTROUTING out_interface=wlan0 jump=MASQUERADE
+- name: rules.v4
+  copy: src=rules.v4 dest=/etc/iptables
 
-- name: iptables --append FORWARD --in-interface eth1 -j ACCEPT
-  iptables: action=append chain=FORWARD in_interface=eth0 jump=ACCEPT
+- command: /bin/sh -c 'iptables-restore </etc/iptables/rules.v4'

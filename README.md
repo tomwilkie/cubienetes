@@ -21,16 +21,22 @@ First versions of the hard disk brackets didn't quite fit:
 
 ![First partial assembly](images/v1-partial.jpg)
 
+I did a full build to get a handle on the cabling too:
+
+![First full assembly](images/v1-full.jpg)
+
 Problems were:
 - The SSD mounting hole pitch was off by 0.5mm.
 - The walls around the pillars meant the distance between the pillars was too small.
 - The bore of all the holes (3mm) was too tight for M3 threaded rod and needed drilling out.  Surprisingly the Shapeways white plastic took this quite well.
 
-So I created & new design and ordered that.
+So I created & new design and ordered that:
 
-I did a full build to get a handle on the cabling too:
+![Second partial assembly](images/v2-partial.jpg)
 
-![First full assembly](images/v1-full.jpg)
+And with the router & PSU double-sided-sticky taped on, and cables all cable-tied:
+
+![Second full assembly](images/v2-full.jpg)
 
 ## Software
 
@@ -55,7 +61,7 @@ I did this manually.  I also statically assigned IP addresses 192.168.0.1-5 to t
 
 ### Networking.
 
-I designated the first Cubieboard as the "master", and set it up to do NAT routing & DNS.
+I designated the first Cubieboard as the "master", and set it up to do NAT routing & DNS as it also has a WiFi adapter.
 
 ```
 ansible-playbook --inventory-file=inventory --user=root custom-playbooks/networking.yaml
