@@ -46,9 +46,9 @@ And with the router & PSU double-sided-sticky taped on, and cables all cable-tie
 - Use [Keka](http://www.kekaosx.com/en/) and [Etcher](https://etcher.io/) to decompress / write the image.
 - Use the latest kernel you can - Docker needs it.
 
-### SSH
+### Manual setup
 
-For ansible to work, you need to setup password-less ssh:
+For ansible to work, I setup password-less ssh:
 
 ```
 mkdir .ssh
@@ -59,7 +59,7 @@ chmod 600 ~/.ssh/authorized_keys
 
 I did this manually.  I also statically assigned IP addresses 192.168.0.1-5 to the Cubieboards manually.  The rest was configured with ansible.
 
-### Networking.
+### Automated setup
 
 I designated the first Cubieboard as the "master", and set it up to do NAT routing & DNS as it also has a WiFi adapter.
 
@@ -67,12 +67,16 @@ I designated the first Cubieboard as the "master", and set it up to do NAT routi
 ansible-playbook --inventory-file=inventory --user=root custom-playbooks/networking.yaml
 ```
 
-### Disks
-
 The disks got LVM & ext4 installed and mounted at /mnt/countainers:
 
 ```
 ansible-playbook --inventory-file=inventory --user=root custom-playbooks/disks.yaml
+```
+
+And the hostnames were all set and put in /etc/hosts:
+
+```
+ansible-playbook --inventory-file=inventory --user=root custom-playbooks/hostname.yaml
 ```
 
 ### Docker Daemon
