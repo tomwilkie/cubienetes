@@ -1,0 +1,31 @@
+---
+- name: install docker repo prerequisites
+  apt: name={{item}} state=present update_cache=no
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg2
+
+- name: install docker apt key
+  apt_key: url=https://download.docker.com/linux/debian/gpg id=0EBFCD88 state=present
+
+- name: add docker repo
+  apt_repository: repo='deb https://download.docker.com/linux/debian jessie stable' state=present
+
+- name: remove docker engine/hypriot
+  apt: name={{item}} state=absent
+  with_items:
+    - docker-hypriot
+    - docker-engine
+
+- name: install docker
+  apt: name={{item}} state=present update_cache=yes
+  with_items:
+    - docker-ce=17.03.0~ce-0~debian-jessie
+
+- name: copy docker systemd drop in
+  copy: src=10-docker.conf dest=/etc/systemd/system/docker.service.d/
+  notify:
+    - docker reload
+    - docker restart

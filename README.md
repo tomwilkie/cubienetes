@@ -85,10 +85,5 @@ ansible-playbook --inventory-file=inventory --user=root custom-playbooks/hostnam
 - https://packagecloud.io/app/Hypriot/Schatzkiste/search?filter=all&q=docker-hypriot&dist=debian%2Fjessie
 
 ```
-$ curl https://packagecloud.io/gpg.key | sudo apt-key add -
-$ sudo bash -c 'cat > /etc/apt/sources.list.d/Hypriot_Schatzkiste.list' << EOF
-deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ jessie main
-EOF
+ansible-playbook --inventory-file=inventory --user=root custom-playbooks/docker.yaml
 ```
-
-
